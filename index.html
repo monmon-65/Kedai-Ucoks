@@ -23,6 +23,15 @@
 
     <!-- My Style -->
     <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Alpinejs -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- App -->
+    <script src="src/app.js"></script>
   </head>
   <body>
     <!-- Navbar start -->
@@ -36,14 +45,45 @@
         <a href="#home">Home</a>
         <a href="#about">Tentang Kami</a>
         <a href="#menu">Menu</a>
+        <a href="#order">Order</a>
         <a href="#contact">Kontak</a>
       </div>
 
       <div class="navbar-extra">
-        <a href="#" id="search"><i data-feather="search"></i></a>
-        <a href="#" id="shopping-cart"><i data-feather="shopping-cart"></i></a>
+        <a href="#" id="search-button"><i data-feather="search"></i></a>
+        <a href="#" id="shopping-cart-button"
+          ><i data-feather="shopping-cart"></i
+        ></a>
         <a href="#" id="drink-menu"><i data-feather="menu"></i></a>
       </div>
+
+      <!-- search form start -->
+      <div class="search-form">
+        <input type="search" id="search-box" placeholder="Search here..." />
+        <label for="search-box"><i data-feather="search"></i></label>
+      </div>
+      <!-- search form end -->
+
+      <!-- Shopping Cart Start -->
+      <div class="shopping-cart">
+        <div class="cart-item">
+          <img src="img/Order/Order-1.jpeg" alt="Product 1" />
+          <div class="item-detail">
+            <h3>Product 1</h3>
+            <div class="item-price">IDR 10k</div>
+          </div>
+          <i data-feather="trash-2" class="remove-item"></i>
+        </div>
+        <div class="cart-item">
+          <img src="img/Order/Order-1.jpeg" alt="Product 1" />
+          <div class="item-detail">
+            <h3>Product 1</h3>
+            <div class="item-price">IDR 10k</div>
+          </div>
+          <i data-feather="trash-2" class="remove-item"></i>
+        </div>
+      </div>
+      <!-- Shopping Cart End -->
     </nav>
 
     <!-- Navbar end -->
@@ -134,6 +174,54 @@
     </section>
     <!-- Menu Section End -->
 
+    <!-- product section start -->
+    <section class="order" id="order" x-data="order">
+      <h2><span>Memesan</span> Menu</h2>
+      <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod, soluta!
+      </p>
+
+      <div class="row">
+        <template x-for="(item, index) in items" x-key="index">
+          <div class="product-card">
+            <div class="product-icons">
+              <a href="#">
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#shopping-cart" />
+                </svg>
+              </a>
+              <a href="#" class="item-detail-button"
+                ><i data-feather="eye"></i
+              ></a>
+            </div>
+
+            <div class="product-image">
+              <img :src="`img/order/${item.img}`" :alt="item.name" />
+            </div>
+            <div class="product-content">
+              <h3 x-text="item.name"></h3>
+              <div class="product-stars">
+                <i data-feather="star" class="star-full"></i>
+                <i data-feather="star" class="star-full"></i>
+                <i data-feather="star" class="star-full"></i>
+                <i data-feather="star" class="star-full"></i>
+                <i data-feather="star"></i>
+              </div>
+              <div class="product-price"><span x-text="item.price"></span></div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <!-- product section end -->
+
     <!-- Kontak Section start -->
     <section id="contact" class="contact">
       <h2><span>Kontak</span> Kami</h2>
@@ -187,6 +275,35 @@
       </div>
     </footer>
     <!-- Footer end -->
+
+    <!-- modal box items start -->
+    <div class="modal" id="item-detail-modal">
+      <div class="modal-container">
+        <a href="#" class="close-icon"><i data-feather="x"></i></a>
+        <div class="modal-content">
+          <img src="img/Order/1.jpg" alt="Product 1" />
+          <div class="product-content">
+            <h3>Menu 1</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore,
+              laboriosam!
+            </p>
+            <div class="product-stars">
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star" class="star-full"></i>
+              <i data-feather="star"></i>
+            </div>
+            <div class="product-price">IDR 10K <span>IDR 15K</span></div>
+            <a href="#"
+              ><i data-feather="shopping-cart"></i> <span>Add to cart</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- modal box items end -->
 
     <!-- Feather Icons -->
     <script>
