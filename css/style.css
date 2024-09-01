@@ -32,6 +32,7 @@ body {
   font-size: 2rem;
   cursor: pointer;
   padding: 0.5rem 1.5rem;
+  border-radius: 20px;
 }
 
 .btn:hover {
@@ -136,9 +137,42 @@ ion-icon {
   font-size: 2rem;
   margin-right: 1.5rem;
   color: var(--bg);
+} 
+
+/* Menu */
+.row .menu-card span {
+  text-decoration: line-through;
+  font-weight: lighter;
+  font-size: 1.3rem;
+}
+
+/* Modal Box */
+.product-prices span {
+  text-decoration: line-through;
+  font-weight: lighter;
+  font-size: 1.3rem;
+}
+
+.product-content {
+  font-size: 1.7rem;
 }
 
 /* Shopping Cart */
+#shopping-cart-button {
+  position: relative;
+}
+
+#shopping-cart-button .quantity-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  background-color: red;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 0;
+  right: -5px;
+}
+
 .shopping-cart {
   position: absolute;
   top: 100%;
@@ -166,27 +200,88 @@ ion-icon {
 }
 
 .shopping-cart img {
-  height: 6rem;
+  height: 4rem;
   border-radius: 50%;
 }
 
 .shopping-cart h3 {
-  font-size: 1.6rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.4rem;
 }
 
 .shopping-cart .item-price {
   font-size: 1.2rem;
 }
 
-.shopping-cart .remove-item {
-  position: absolute;
-  right: 1rem;
+.shopping-cart .cart-item #add,
+.shopping-cart .cart-item #remove {
+  display: inline-block;
+  padding: 2px 5px;
+  cursor: pointer;
+  margin: 0 8px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.shopping-cart h4 {
+  font-size: 2rem;
+  margin-top: -1rem;
+  text-align: center;
+}
+
+/* form checkout */
+.form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-top: 1px dashed black;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.form-container h5 {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.form-container form {
+  width: 100%;
+  text-align: center;
+}
+
+.form-container label {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.form-container span {
+  text-align: right;
+}
+
+.form-container input {
+  background-color: #ddd;
+  padding: 5px;
+  font-size: 1rem;
+  width: 70%;
+}
+
+.form-container .checkout-button {
+  padding: 6px 14px;
+  background-color: var(--Maroon);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 20px;
+  margin: 1rem auto;
   cursor: pointer;
 }
 
-.shopping-cart .remove-item:hover {
-  color: var(--Maroon);
+.form-container .checkout-button.disabled {
+  background-color: #999;
+  cursor: not-allowed;
 }
 
 /* Home */
@@ -271,7 +366,7 @@ ion-icon {
 
 /* About Section */
 .about,
-.menu, 
+.menu,
 .order,
 .contact {
   padding: 11rem 7% 1.4rem;
@@ -291,6 +386,10 @@ ion-icon {
 .order h2 span,
 .contact h2 span {
   color: var(--Maroon);
+}
+
+.order p {
+  font-size: 1.7rem;
 }
 
 .about .row {
@@ -318,7 +417,7 @@ ion-icon {
 .about .row .content p {
   margin-bottom: 0.8rem;
   font-size: 1.4rem;
-  font-weight: 100;
+  font-weight: 300;
   line-height: 1.6;
 }
 
@@ -335,6 +434,7 @@ ion-icon {
   margin: auto;
   font-weight: 100%;
   line-height: 1.6;
+  font-size: 1.4rem;
 }
 
 .menu .row {
@@ -359,7 +459,7 @@ ion-icon {
 }
 
 /* Product Section */
-.order p{
+.order p {
   text-align: center;
 }
 
@@ -385,7 +485,7 @@ ion-icon {
 .order .product-icons a {
   width: 4rem;
   height: 4rem;
-  color:#fff;
+  color: #fff;
   margin: 0.3rem;
   border: 1px solid #666;
   border-radius: 50%;
@@ -416,19 +516,13 @@ ion-icon {
   padding: 0.8rem;
 }
 
-.star-full {
+.order .product-stars .star-full {
   fill: #ffd700;
 }
 
 .order .product-price {
   font-size: 1.3rem;
   font-weight: bold;
-}
-
-.order .product-price span {
-  text-decoration: line-through;
-  font-weight: lighter;
-  font-size: 1rem;
 }
 
 /* Contact Section */
@@ -581,12 +675,10 @@ to {
   gap: 1rem;
   width: 12rem;
   background-color: var(--Maroon);
-  color:#fff;
+  color: #fff;
   margin-top: 1rem;
   padding: 1rem 1.6rem;
 }
-
-
 
 /* Media Queries */
 

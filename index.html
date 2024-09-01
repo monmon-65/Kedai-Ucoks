@@ -31,11 +31,11 @@
     ></script>
 
     <!-- App -->
-    <script src="src/app.js"></script>
+    <script src="src/app.js" async></script>
   </head>
   <body>
     <!-- Navbar start -->
-    <nav class="navbar">
+    <nav class="navbar" x-data>
       <img
         src="img/ucoks.png"
         style="width: 75px; height: auto; margin-bottom: 0px"
@@ -51,10 +51,12 @@
 
       <div class="navbar-extra">
         <a href="#" id="search-button"><i data-feather="search"></i></a>
-        <a href="#" id="shopping-cart-button"
-          ><i data-feather="shopping-cart"></i
-        ></a>
-        <a href="#" id="drink-menu"><i data-feather="menu"></i></a>
+        <a href="#" id="shopping-cart-button">
+          <i data-feather="shopping-cart"></i>
+          <span class="quantity-badge" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+        </a>
+        <a href="#" id="drink-menu"><i data-feather="menu"></i>
+        </a>
       </div>
 
       <!-- search form start -->
@@ -66,22 +68,54 @@
 
       <!-- Shopping Cart Start -->
       <div class="shopping-cart">
+        <template x-for="(item, index) in $store.cart.items" x-keys="index">
         <div class="cart-item">
-          <img src="img/Order/Order-1.jpeg" alt="Product 1" />
+          <img :src="`img/Order/${item.img}`" :alt="item.name">
           <div class="item-detail">
-            <h3>Product 1</h3>
-            <div class="item-price">IDR 10k</div>
+            <h3 x-text="item.name"></h3>
+            <div class="item-price">
+              <span x-text="rupiah(item.price)"></span> &times;
+              <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+              <span x-text="item.quantity"></span>
+              <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+              <span x-text="rupiah(item.total)"></span>
+            </div>
           </div>
-          <i data-feather="trash-2" class="remove-item"></i>
         </div>
-        <div class="cart-item">
-          <img src="img/Order/Order-1.jpeg" alt="Product 1" />
-          <div class="item-detail">
-            <h3>Product 1</h3>
-            <div class="item-price">IDR 10k</div>
-          </div>
-          <i data-feather="trash-2" class="remove-item"></i>
-        </div>
+      </template>
+      <h4 x-show="!$store.cart.items.length" style="margin-top: 1rem;">Cart Is Empty</h4>
+      <h4 x-show="$store.cart.items.length">Total : <span x-text="rupiah($store.cart.total)"></span></h4>
+
+      <div class="form-container" x-show="$store.cart.items.length">
+        <form action="" id="checkoutForm">
+          <input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+          <input type="hidden" name="total" x-model="$store.cart.total">
+          <h5>Customer Detail</h5>
+
+          <label for="name">
+            <span>Nama</span>
+            <input type="text" name="name" id="name">
+          </label>
+
+          <label for="class">
+            <span>Kelas</span>
+            <input type="text" name="class" id="class">
+          </label>
+
+          <label for="email">
+            <span>Email</span>
+            <input type="email" name="email" id="email">
+          </label>
+
+          <label for="phone">
+            <span>Phone</span>
+            <input type="number" name="phone" id="phone" autocomplete="off">
+          </label>
+
+          <button class="checkout-button disabled" type="submit" id="checkout-button" value="checkout">Checkout</button>
+          
+        </form>
+      </div>
       </div>
       <!-- Shopping Cart End -->
     </nav>
@@ -99,16 +133,16 @@
           >
             <div class="content">
               <h3>Mari Nikmati Minuman Segar</h3>
-              <a href="#" class="btn">Beli Sekarang</a>
+              <a href="#order" class="btn">Beli Sekarang</a>
             </div>
           </div>
 
           <div
             class="swiper-slide slide"
-            style="background: url('img/header-bg.jfif') no-repeat"
+            style="background: url('img/header-2.jfif') no-repeat"
           >
             <div class="content">
-              <h3>Mari Nikmati Minuman Segar</h3>
+              <h3>Rasakan Manisnya, Segarkan Harimu</h3>
               <a href="#" class="btn">Beli Sekarang</a>
             </div>
           </div>
@@ -135,14 +169,14 @@
 
       <div class="row">
         <div class="about-img">
-          <img src="img/about.jpeg" alt="Tentang Kami" />
+          <img src="img/tentang-kami.jpg" alt="Tentang Kami" />
         </div>
         <div class="content">
           <h3>Kenapa memilih minuman kami?</h3>
           <p>
             Rasakan Keharuman dan Kesegaran di Kedai Ucoks. Kami mengundang Anda
-            untuk menikmati keunikan minuman melon sago yang menyegarkan dan
-            mocktail galaxy yang memikat, hanya di Kedai Ucoks, tempat dimana
+            untuk menikmati keunikan minuman Sacoks yang menyegarkan dan
+            Ucok Stail yang memikat. Hanya di Kedai Ucoks, tempat dimana
             setiap minuman adalah perayaan rasa.
           </p>
         </div>
@@ -157,18 +191,17 @@
 
       <div class="row">
         <div class="menu-card">
-          <img src="img/menu/1.jfif" alt="Melon Sago" class="menu-card-img" />
-          <h3 class="menu-card-title">- Melon Sago -</h3>
-          <p class="menu-card-price">IDR 10K</p>
+          <img src="img/menu/1.jpg" alt="Sacoks" class="menu-card-img" />
+          <h3 class="menu-card-title">- Sacoks -</h3>
+          <p class="menu-card-price">Rp 8.000</p><span>Rp 12.000</span>
         </div>
         <div class="menu-card">
           <img
-            src="img/menu/1.jfif"
-            alt="Mocktail Galaxy Lemonade"
-            class="menu-card-img"
-          />
-          <h3 class="menu-card-title">- Melon Sago -</h3>
-          <p class="menu-card-price">IDR 10K</p>
+            src="img/menu/2.jpg"
+            alt="Ucok STail"
+            class="menu-card-img"/>
+          <h3 class="menu-card-title">- Ucok Stail -</h3>
+          <p class="menu-card-price">Rp 6.000</p><span>Rp 10.000</span>
         </div>
       </div>
     </section>
@@ -178,14 +211,14 @@
     <section class="order" id="order" x-data="order">
       <h2><span>Memesan</span> Menu</h2>
       <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod, soluta!
+        Ayo Pesan Sekarang!
       </p>
 
       <div class="row">
         <template x-for="(item, index) in items" x-key="index">
           <div class="product-card">
             <div class="product-icons">
-              <a href="#">
+              <a href="#" @click.prevent="$store.cart.add(item)">
                 <svg
                   width="24"
                   height="24"
@@ -193,29 +226,69 @@
                   stroke="currentColor"
                   stroke-width="2"
                   stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+                  stroke-linejoin="round">
                   <use href="img/feather-sprite.svg#shopping-cart" />
                 </svg>
               </a>
-              <a href="#" class="item-detail-button"
-                ><i data-feather="eye"></i
-              ></a>
             </div>
 
             <div class="product-image">
-              <img :src="`img/order/${item.img}`" :alt="item.name" />
+              <img :src="`img/Order/${item.img}`" :alt="item.name" />
             </div>
             <div class="product-content">
               <h3 x-text="item.name"></h3>
-              <div class="product-stars">
-                <i data-feather="star" class="star-full"></i>
-                <i data-feather="star" class="star-full"></i>
-                <i data-feather="star" class="star-full"></i>
-                <i data-feather="star" class="star-full"></i>
-                <i data-feather="star"></i>
+              <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="None"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
               </div>
-              <div class="product-price"><span x-text="item.price"></span></div>
+              <div class="product-price"><span x-text="rupiah(item.price)"></span></div>
             </div>
           </div>
         </template>
@@ -227,7 +300,7 @@
     <section id="contact" class="contact">
       <h2><span>Kontak</span> Kami</h2>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, quas.
+        Feedback Customer, sangat membantu perkembangan bisnis kami.
       </p>
 
       <div class="row">
@@ -238,30 +311,48 @@
           referrerpolicy="no-referrer-when-downgrade"
           class="map"
         ></iframe>
-        <form action="">
+        <form onsubmit="sendMessage()">
           <div class="input-group">
             <i data-feather="user"></i>
-            <input type="text" placeholder="Nama" />
+            <input type="text" id="names" placeholder="Nama" required />
           </div>
           <div class="input-group">
             <i data-feather="mail"></i>
-            <input type="text" placeholder="Email" />
+            <input type="email" id="emails" placeholder="Email" required />
           </div>
           <div class="input-group">
             <i data-feather="phone"></i>
-            <input type="text" placeholder="No HP" />
+            <input type="number" id="phones" placeholder="No HP" required />
+          </div>
+          <div class="input-group">
+            <i data-feather="message-square"></i>
+            <input type="text" id="message" placeholder="Pesan" required />
           </div>
           <button type="submit" class="btn">Kirim Pesan</button>
         </form>
       </div>
     </section>
+
+    <script>
+      function sendMessage() {
+        const names = document.getElementById("names").value;
+        const emails = document.getElementById("emails").value;
+        const phones = document.getElementById("phones").value;
+        const message = document.getElementById("message").value;
+
+        const url = "https://api.whatsapp.com/send?phone=628989741162&text=Halo%20Admin.%0ASaya%20*"+ names +"*%0AEmail%20Saya%20*"+ emails +"*%0ANo%20HP%20Saya%20*"+ phones +"*%0A%0A*"+ message +"*";
+
+        window.open(url);
+      }
+    </script>
+
     <!-- Kontak Section end -->
 
     <!-- Footer start -->
     <footer>
       <div class="socials">
-        <a href="#"><i data-feather="instagram"></i></a>
-        <a href="#"><i data-feather="phone-call"></i></a>
+        <a href="https://www.instagram.com/kedaiucoks?igsh=MTBxeGo4czZscThycw=="><i data-feather="instagram"></i></a>
+        <a href="https://wa.me/628989741162/"><i data-feather="phone-call"></i></a>
       </div>
 
       <div class="links">
@@ -282,28 +373,69 @@
       <div class="modal-container">
         <a href="#" class="close-icon"><i data-feather="x"></i></a>
         <div class="modal-content">
-          <img src="img/Order/1.jpg" alt="Product 1" />
+          <img src="img/Order/1.jpg" alt="Product 1">
           <div class="product-content">
-            <h3>Menu 1</h3>
+            <h3>Sacoks</h3>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore,
-              laboriosam!
+              Minuman rasa melon dengan campuran buah asli yang menyegarkan hari-harimu...
             </p>
-            <div class="product-stars">
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star" class="star-full"></i>
-              <i data-feather="star"></i>
-            </div>
-            <div class="product-price">IDR 10K <span>IDR 15K</span></div>
-            <a href="#"
-              ><i data-feather="shopping-cart"></i> <span>Add to cart</span></a
-            >
+            <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="#ffd700"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="None"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <use href="img/feather-sprite.svg#star" />
+                </svg>
+            <div class="product-prices">Rp 8.000 <span>Rp 12.000</span></div>
           </div>
         </div>
       </div>
     </div>
+
+    
     <!-- modal box items end -->
 
     <!-- Feather Icons -->
